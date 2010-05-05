@@ -1,0 +1,61 @@
+.___                 __         .__  .__
+|   | ____   _______/  |______  |  | |  |
+|   |/    \ /  ___/\   __\__  \ |  | |  |
+|   |   |  \\___ \  |  |  / __ \|  |_|  |__
+|___|___|  /____  > |__| (____  /____/____/
+         \/     \/            \/
+
+To install this driver correctly, just do the folowing:
+  $ make
+As root:
+  $ make install
+The install command creates a udev rule to make the char device /dev/cheeky[0-9]*
+group owned by the cheeky group. After the installation, if you want to use the
+helper programme cheeky_control (or to control the cheeky char device with another
+programm), make sure your user is a member of the cheeky group, to do so:
+  $ gpasswd -a USER cheeky
+You are now ready to plug your led display device. A new char device will be
+created and you can manage it thanks to the helper programm cheeky_control, which
+should be present at the root of the project (see README or cheeky_control --help
+to see the documentation).
+
+ /!\----------
+| ! | Don't forget that the driver won't be loaded at next boot, to do so, follow
+| ! | instructions corresponding to your distribution.
+ \!/----------
+
+ArchLinux:
+As root edit /etc/rc.conf and add 'cheeky_driver' to the MODULES list:
+  $ emacs /etc/rc.conf	# Don't edit with vi/vim... it sucks ;)
+MODULES should look like 'MODULES( ... cheeky_driver ...)' where the '...' are
+other modules that are loaded at boot time.
+
+Gentoo:
+As root add a line to the file /etc/modules.autoload/kernel-2.6 containing
+'cheeky_driver':
+  $ echo 'cheeky_driver' >> /etc/modules.autoload/kernel-2.6
+
+Debian/Ubuntu:
+As root add a line to the file /etc/modules containing 'cheeky_driver':
+  $ echo 'cheeky_driver' >> /etc/modules
+
+
+Fedora/RedHat/CentOS/Mandrake/Mandriva:
+As root add a line to the file /etc/modules.conf containing 'cheeky_driver'
+  $ echo 'cheeky_driver' >> /etc/rc.modules
+
+If your distribution is not in the list above, please refer to its
+documentation.
+
+ ____ ___      .__                 __         .__  .__
+|    |   \____ |__| ____   _______/  |______  |  | |  |
+|    |   /    \|  |/    \ /  ___/\   __\__  \ |  | |  |
+|    |  /   |  \  |   |  \\___ \  |  |  / __ \|  |_|  |__
+|______/|___|  /__|___|  /____  > |__| (____  /____/____/
+             \/        \/     \/            \/
+As root:
+  $ make uninstall
+
+ /!\---------
+| ! | If you added cheeky_driver to be loaded at boot time, don't forget to remove it.
+ \!/---------

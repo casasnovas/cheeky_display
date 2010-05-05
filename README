@@ -1,0 +1,67 @@
+_________ .__                   __                   .___.__
+\_   ___ \|  |__   ____   ____ |  | _____.__.      __| _/|__| ____________
+/    \  \/|  |  \_/ __ \_/ __ \|  |/ <   |  |     / __ | |  |/  ___/\____ \
+\     \___|   Y  \  ___/\  ___/|    < \___  |    / /_/ | |  |\___ \ |  |_> >
+ \______  /___|  /\___  >\___  >__|_ \/ ____|____\____ | |__/____  >|   __/
+        \/     \/     \/     \/     \/\/   /_____/    \/         \/ |__|
+
+Author:  Quentin Casasnovas
+Licence: GPL2
+Version: 1.0
+
+Description
+~~~~~~~~~~~
+This project aims at giving a driver for the USB led display Dream
+Cheeky. Thanks to this driver, you can easily write text on the display, and
+apply special effects to it. You can activate a horizontal/vertical move (in
+two directions), specify a 16 levels of speed, make the text flashing, negate
+the LED, set the brighness... etc ! A helper programm is given to your
+convenience: cheeky_control.
+
+The driver creates a char device /dev/cheeky%d for each device plugged, and you
+can change the text printed on the screen very fast by writing something to
+this device, the text on the display will be changed immediatly. To be able to
+use special effects, read the documentation in doc/ or simply use the helper
+programm.
+
+The driver also give the ability to send usb packets directly to the device as
+to not restrict only ascii text to be written to the device.
+
+This is my first driver so it's certainly not perfect, feel free to improve it,
+or send me comments about it at quentin.casasnovas@gmail.com
+
+Usage
+~~~~~
+After installing the driver (see INSTALL), you should check that your user is a
+member of the group 'cheeky'. After this check, you should be able to use the
+programm cheeky_control to control the output on the display.
+Here is an example of using this programm:
+  $ cheeky_control -t "Chiche donne nous tout !" --horizontal_move LED_RIGHT_TO_LEFT -f LED_NO_FLASH -s 15
+
+The command above change the text to "Chiche donne nous tout !", and makes it
+moving from right to left, and desactivate the flashing if it was activated.
+For a complete list of all options just run:
+
+  $ cheeky_control --help
+
+You can control almost everything with cheeky_control. I said "almost" because the
+driver is also capable of receiving directly the usb packet to send to the
+device. For doing so, you have to write a programm that open the char device,
+(should be /dev/cheeky0 for the first led message board plugged to the pc) and
+control it with ioctl. The cmd argument should be IOCTL_CMD_CUSTOM (as defined
+in include/cheeky_driver.h) and arg a pointer to a 32 bytes memory area containing
+the 4 usb packet that need to be sent to the usb device.
+
+Documentation
+~~~~~~~~~~~~~
+The source code is fully documented, you may read the source files directly, or
+generate a doxygen documentation in html using the command:
+  $ make doc
+You must have the programm doxygen to generate the documentation, and then
+just open the file named index.html in the directory doc/html/.
+
+Misc
+~~~~
+  The ascii font used in INSTALL and README files is "graffiti" ans has been
+generated with the online ascii generator present at
+http://www.network-science.de/ascii/
